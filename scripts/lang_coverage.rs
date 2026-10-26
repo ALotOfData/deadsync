@@ -1,3 +1,9 @@
+#!/usr/bin/env -S cargo +nightly -Zscript
+---
+[dependencies]
+rustc-hash = "2.1.3"
+---
+
 //! Translation coverage CLI tool.
 //!
 //! Prints a human-readable report of translation progress for each language
@@ -100,9 +106,7 @@ fn main() {
     lang_files.sort();
 
     // Collect stats for each language
-    let en_name = en
-        .get("Meta", "NativeName")
-        .unwrap_or_else(|| "English".to_string());
+    let en_name = en.get("Meta", "NativeName").unwrap_or_else(|| "English");
 
     let mut stats: Vec<LangStats> = Vec::new();
     for path in &lang_files {
@@ -117,9 +121,7 @@ fn main() {
             .and_then(|s| s.to_str())
             .unwrap_or("?")
             .to_string();
-        let native_name = lang
-            .get("Meta", "NativeName")
-            .unwrap_or_else(|| code.clone());
+        let native_name = lang.get("Meta", "NativeName").unwrap_or(&code).to_string();
 
         stats.push(LangStats {
             code,

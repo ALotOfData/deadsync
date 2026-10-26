@@ -111,11 +111,12 @@ Language files are resolved from the executable's `assets/languages/` directory.
 
 ### Testing locally
 
+As of 10/26/2026, local testing requires installing nightly version of Cargo `rustup toolchain install nightly` to enable dynamic loading of crates outside dev environment to run scripts.
+
 ```sh
 # Check coverage and see which keys are missing
 mkdir -p target/tools
-rustc --edition=2024 scripts/lang_coverage.rs -o target/tools/lang_coverage
-./target/tools/lang_coverage
+cargo +nightly -Zscript ./scripts/lang_coverage.rs
 
 # Run the CI validation tests
 cargo test --test i18n_coverage
@@ -127,6 +128,8 @@ cargo test --test i18n_coverage
 ### Submitting
 
 Open a PR. The CI will run the coverage tests to catch stale keys or duplicate entries. Partial translations are welcome — translate what you can and leave the rest. The app falls back to English for any missing key.
+
+Update `TRANSLATION_STATUS.md` using `cargo +nightly -Zscript ./scripts/lang_coverage.rs --markdown` before submitting.
 
 ### Tips
 
